@@ -22,15 +22,15 @@ let toS = o=>JSON.stringify(o,null,2);
 //     req.user = user;
 //   }
 // };
-let redirectLoggedInUserToGuestBook = (req,res)=>{
-  if(req.urlIsOneOf(['/','/login']) && req.user) res.redirect('/public/guestBook.html');
-}
-let redirectLoggedOutUserToIndex = (req,res)=>{
-  if(req.urlIsOneOf(['/','/home','/logout']) && req.user) res.redirect('/public/index.html');
-}
+// let redirectLoggedInUserToGuestBook = (req,res)=>{
+//   if(req.urlIsOneOf(['/','/login']) && req.user) res.redirect('/public/guestBook.html');
+// }
+// let redirectLoggedOutUserToIndex = (req,res)=>{
+//   if(req.urlIsOneOf(['/','/home','/logout']) && req.user) res.redirect('/public/index.html');
+// }
 
 
-const getContentType = function(req){
+let getContentType = (req)=>{
   let extension = req.url.slice(req.url.lastIndexOf('.'));
   let contentTypes = {
     ".jpg" : "img/jpg",
@@ -45,11 +45,24 @@ const getContentType = function(req){
 };
 
 
+let serveFile = (req,res)=>{
+  if(req.url=='/login'){
+    req.url = '/index.html';
+  }
+  let path = './public' + req.url;
+  if(req.method=='GET'){
+    res.setHeader('Content-type',`${getContentType(req)}`);
+    res.write(fs.readFileSync(path));
+    res.end();
+  }
+}
+
 let app = WebApp.create();
 // app.use(logRequest);
 // app.use(loadUser);
-app.use(redirectLoggedInUserToGuestBook);
-app.use(redirectLoggedOutUserToIndex);
+// app.use(redirectLoggedInUserToGuestBook);
+// app.use(redirectLoggedOutUserToIndex);
+app.use(serveFile);
 
 app.get('/login',(req,res)=>{
   res.setHeader('Content-type',`${getContentType(req)}`);
@@ -58,10 +71,11 @@ app.get('/login',(req,res)=>{
 });
 
 app.get('/home',(req,res)=>{
-  res.setHeader('Content-type','text/html');
+  res.setHeader('Content-type',`${getContentType(req)}`);
   res.write(fs.readFileSync('public/index.html'));
   res.end();
 });
+
 // app.post('/login',(req,res)=>{
 //   if(!user) {
 //     res.setHeader('Set-Cookie',`logInFailed=true`);
