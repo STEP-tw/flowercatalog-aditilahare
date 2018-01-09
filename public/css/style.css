@@ -1,0 +1,197 @@
+h1 {
+  margin-top: 70px;
+  font-family : sans-serif;
+  text-align: center;
+  font-size: 40px;
+  margin-bottom: 5px;
+}
+
+form {
+  margin-left: 500px;
+}
+
+.flowers {
+  height: 200px;
+  width: 300px;
+  margin-left: 300px;
+}
+
+.allLinks {
+  margin-left: 850px;
+}
+
+.animatedImage {
+  margin-left: 1390px;
+  margin-top: -160px;
+}
+
+.Abeliophyllum {
+  margin-left: 200px;
+  height: 300px;
+  width: 400px;
+}
+
+.backFromAbeli {
+  font-size: 20px;
+  margin-left: 730px;
+  margin-top: -350px;
+}
+
+.Ageratum {
+  margin-left: 130px;
+  height: 400px;
+  width:500px;
+}
+
+.backFromAgera {
+  font-size: 20px;
+  margin-left: 750px;
+  margin-top: -452px;
+}
+
+.backFromGuestBook {
+  font-size: 20px;
+  margin-left: 810px;
+  margin-top: -55px;
+}
+
+#subTitle {
+  color: darkorange;
+  margin-left: 960px;
+}
+
+p {
+  font-size: 22px;
+  margin-left: 500px;
+  margin-top: 30px;
+}
+
+
+#abeliThematicBreak {
+  margin-bottom: 5px;
+}
+
+#abeliTitle {
+  text-align: center;
+  color: darkorange;
+}
+
+
+#ageraTitle {
+  text-align: center;
+  color: darkorange;
+}
+
+#guestTitle {
+  font-size: 30px;
+  margin-left: 850px;
+  color: darkorange;
+}
+
+#instruction {
+  font-weight: bold;
+  font-size: 25px;
+}
+
+
+#button {
+  margin-left: 500px;
+  font-size: 13px;
+  height: 50px;
+  width: 100px;
+}
+
+#nameHolder {
+  height: 40px;
+  width: 300px;
+  border: 1px solid black;
+}
+
+#commentHolder {
+  height: 70px;
+  width: 350px;
+  margin-top: 10px;
+  border: 1px solid black;
+}
+
+#guestBookFirstHr {
+  margin-top: 15px;
+}
+
+#submittedList {
+  margin-top: 10px;
+  font-size: 20px;
+}
+
+#guestBookSecondHr {
+  margin-top: 80px;
+}
+
+#abeli {
+  margin-top: 0px;
+}
+
+.abeliParaOne {
+  font-size: 20px;
+  margin-left: 810px;
+  margin-top: 300px;
+}
+
+.abeliParaTwo {
+  font-size: 20px;
+  margin-left: 810px;
+  margin-top: 10px;
+}
+
+.abeliParaThree {
+  font-size: 20px;
+  margin-left: 810px;
+  margin-top: 10px;
+}
+
+.ageraParaOne {
+  font-size: 20px;
+  margin-left: 932px;
+  margin-top: 250px;
+}
+
+.ageraParaTwo {
+  font-size: 20px;
+  margin-left: 932px;
+  margin-top: 10px;
+}
+
+.ageraParaThree {
+  font-size: 20px;
+  margin-left: 932px;
+  margin-top: 10px;
+}
+
+.menuOptions {
+  margin-top: -10px;
+  font-size: 18px;
+  margin-left: 490px;
+}
+
+span {
+  font-weight: bold;
+}
+
+.ageraPdf {
+  color: blue;
+  margin-left: 930px;
+}
+
+.abeliPdf {
+  color: blue;
+  margin-left: 810px;
+}
+
+#submitButton {
+ height: 200px;
+ width: 80px;
+}
+
+.comments {
+  margin-left: 500px;
+}

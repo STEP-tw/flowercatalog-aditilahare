@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title></title>
+  <link rel="stylesheet" href="./css/style.css">
+  <script type="text/javascript">
+    let hideImage = function(){
+      document.getElementById("waterJug").style.visibility = "hidden";
+      setTimeout(function(){
+        document.getElementById("waterJug").style.visibility = "visible";
+      },1000);
+    }
+  </script>
+</head>
+<body>
+  <h1>Flower Catalog </h1>
+  <hr</hr>
+  <h2 id="subTitle"> Flower Catalog </h2>
+  <hr></hr>
+  <div class="flowers">
+    <img src="./img/freshorigins.jpg">
+  </div>
+  <div class="allLinks">
+    <ul class="menuOptions">
+      <li><a href="./Abeliophyllum.html">Abeliophyllum</a><br></li>
+      <li><a href="./Ageratum.html">Ageratum</a><br><br><br><br><br><br><br></li>
+      <li><a href="./guestBook.html">Guest book</a><br></li>
+    </ul>
+  </div>
+  <div class="animatedImage">
+    <img onclick="hideImage()" id="waterJug" src="./img/animated-flower-image-0021.gif">
+  </div>
+</body>
+</html>
