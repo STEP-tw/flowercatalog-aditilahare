@@ -97,7 +97,7 @@ let setUrlForServeFile = function(req){
   }
 }
 
-let serveFile = (req,res)=>{
+let requestHandler = (req,res)=>{
   setUrlForServeFile(req);
   if(req.method=='GET'){
     let path = './public' + req.url;
@@ -116,7 +116,7 @@ let serveFile = (req,res)=>{
 let app = WebApp.create();
 app.use(logRequest);
 app.use(loadUser);
-app.use(serveFile);
+app.use(requestHandler);
 
 app.get('/login',(req,res)=>{
   res.setHeader('Content-type',`${getContentType(req)}`);
