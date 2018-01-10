@@ -101,29 +101,33 @@ let serveFile = function(req,res){
 
 let redirectToGuestBook = function(req,res){
   dealWithComments(req);
-  res.redirect('guestBook.html');
+  res.redirect('commentPage.html');
   res.end();
 }
 
 let allowUserToLogin = function(req,res){
-  let guestPage = guestBook.replace('placeHolder',linkForLogin);
-  res.write(guestPage);
-  res.end();
+  if(req.url=='/guestBook.html'){
+    let guestPage = guestBook.replace('placeHolder',linkForLogin);
+    res.write(guestPage);
+    res.end();
+  }
 }
 
 
 let allowUserToEnterComments = function(req,res){
-  let guestPage = guestBook.replace('placeHolder',commentBook);
-  res.write(guestPage);
-  res.end();
+  if(req.url=='/loggedIn'){
+    let guestPage = guestBook.replace('placeHolder',commentBook);
+    res.write(guestPage);
+    res.end();
+  }
 }
 
 let app = WebApp.create();
 app.use(logRequest);
 app.use(loadUser);
-app.use(serveFile);
 app.use(allowUserToLogin);
 app.use(allowUserToEnterComments);
+app.use(serveFile);
 
 
 app.get('/',(req,res)=>{
@@ -131,7 +135,7 @@ app.get('/',(req,res)=>{
 });
 
 
-app.post('guestBook',redirectToGuestBook);
+app.post('/guestBook',redirectToGuestBook);
 
 app.get('/logout',(req,res)=>{
   res.redirect('index.html');
