@@ -1,7 +1,7 @@
 let fs = require('fs');
-const timeStamp = require('./time.js').timeStamp;
-const http = require('http');
-const WebApp = require('./webapp');
+let timeStamp = require('./time.js').timeStamp;
+let http = require('http');
+let WebApp = require('./webapp');
 let toS = o=>JSON.stringify(o,null,2);
 let registered_users = [{userName:'aditi',name:'Aditi Lahare'}];
 
@@ -40,6 +40,51 @@ let getContentType = (req)=>{
 };
 
 
+let getUpdatedComments = function (comment) {
+  let existingComments = fs.readFileSync("data/comments.json","utf8");
+  existingComments = JSON.parse(existingComments);
+  existingComments.unshift(comment);
+  let updatedComments = JSON.stringify(existingComments,null,2);
+  return updatedComments;
+};
+
+let toHtml = function(allComments){
+  return allComments.map((comment)=>{
+    return `<p>date:${comment.date} name:${comment.name} comment:${comment.comment}</p>`
+  })
+}
+
+let updateCommentsOnGuestBook = function(allComments){
+  let comments = JSON.parse(allComments);
+  let commentsInHtml = toHtml(comments).join("\n");
+  fs.writeFileSync("public/allComments.html",commentsInHtml);
+}
+
+let updateCommentsInFiles = function(allComments){
+  fs.writeFileSync("data/comments.json",allComments);
+  updateCommentsOnGuestBook(allComments);
+}
+
+
+let handleComments = function(comment){
+  comment = querystring.parse(comment);
+  let date = new Date().toLocaleString();
+  comment['date']=date;
+  let allComments = getUpdatedComments(comment);
+  updateCommentsInFiles(allComments);
+};
+
+
+let dealWithComments = function(req){
+  let comment = "";
+  req.on("data",(chunk)=>{
+    comment+=chunk;
+  });
+  req.on("end",()=>{
+    handleComments(comment);
+  });
+};
+
 let setUrlForServeFile = function(req){
   if(req.url=='/home'){
     return req.url = '/index.html';
@@ -60,7 +105,6 @@ let serveFile = (req,res)=>{
     res.write(fs.readFileSync(path));
     res.end();
   }
-  // console.log(req.user);
   if(req.method=='POST'){
     let path = './public/guestBook.html'
     res.setHeader('Content-type',`${getContentType(req)}`);
@@ -107,7 +151,7 @@ app.get('/logout',(req,res)=>{
   res.end();
 });
 
-const PORT = 5000;
+let PORT = 5000;
 let server = http.createServer(app);
 server.on('error',e=>console.error('**error**',e.message));
 server.listen(PORT,(e)=>console.log(`server listening at ${PORT}`));
