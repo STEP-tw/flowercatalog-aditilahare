@@ -1,9 +1,12 @@
 let fs = require('fs');
+let guestBook = fs.readFileSync('./public/guestBook.html','utf8');
+let commentBook = fs.readFileSync('./public/commentPage.html','utf8');
 let timeStamp = require('./time.js').timeStamp;
 let http = require('http');
 let WebApp = require('./webapp');
 let toS = o=>JSON.stringify(o,null,2);
 let registered_users = [{userName:'aditi',name:'Aditi Lahare'}];
+let linkForLogin = `<a href="./login.html">Click For Login </a>`
 
 let logRequest = (req,res)=>{
   let text = ['------------------------------',
@@ -14,7 +17,7 @@ let logRequest = (req,res)=>{
     `BODY=> ${toS(req.body)}`,''].join('\n');
   fs.appendFile('request.log',text,()=>{});
 
-  console.log(`${req.method} ${req.url}`);
+  // console.log(`${req.method} ${req.url}`);
 }
 let loadUser = (req,res)=>{
   let sessionid = req.cookies.sessionid;
@@ -85,70 +88,53 @@ let dealWithComments = function(req){
   });
 };
 
-let setUrlForServeFile = function(req){
-  if(req.url=='/home'){
-    return req.url = '/index.html';
-  }
-  if(req.url=='/login'){
-    return req.url = '/login.html';
-  }
-  if(req.url=='/logout'){
-    return req.url = '/index.html';
+let serveFile = function(req,res){
+  let fileName = `public${req.url}`;
+  try {
+    let fileContent = fs.readFileSync(fileName);
+    res.write(fileContent);
+    res.end();
+  } catch (e) {
+    return;
   }
 }
 
-let requestHandler = (req,res)=>{
-  setUrlForServeFile(req);
-  if(req.method=='GET'){
-    let path = './public' + req.url;
-    res.setHeader('Content-type',`${getContentType(req)}`);
-    res.write(fs.readFileSync(path));
-    res.end();
-  }
-  if(req.method=='POST'){
-    let path = './public/guestBook.html'
-    res.setHeader('Content-type',`${getContentType(req)}`);
-    res.write(fs.readFileSync(path));
-    res.end();
-  }
+let redirectToGuestBook = function(req,res){
+  dealWithComments(req);
+  res.redirect('guestBook.html');
+  res.end();
+}
+
+let allowUserToLogin = function(req,res){
+  let guestPage = guestBook.replace('placeHolder',linkForLogin);
+  res.write(guestPage);
+  res.end();
+}
+
+
+let allowUserToEnterComments = function(req,res){
+  let guestPage = guestBook.replace('placeHolder',commentBook);
+  res.write(guestPage);
+  res.end();
 }
 
 let app = WebApp.create();
 app.use(logRequest);
 app.use(loadUser);
-app.use(requestHandler);
+app.use(serveFile);
+app.use(allowUserToLogin);
+app.use(allowUserToEnterComments);
 
-app.get('/login',(req,res)=>{
-  res.setHeader('Content-type',`${getContentType(req)}`);
-  res.write(fs.readFileSync('public/login.html'));
-  res.end();
+
+app.get('/',(req,res)=>{
+  res.redirect('/index.html');
 });
 
-app.get('/home',(req,res)=>{
-  res.setHeader('Content-type',`${getContentType(req)}`);
-  res.write(fs.readFileSync('public/index.html'));
-  res.end();
-});
 
-app.post('/login',(req,res)=>{
-  if(user) {
-    res.setHeader('Content-type',`${getContentType(req)}`);
-    res.write(fs.readFileSync('public/guestBook.html'));
-    res.end();
-    return;
-  }
-  let sessionid = new Date().getTime();
-  res.setHeader('Set-Cookie',`sessionid=${sessionid}`);
-  user.sessionid = sessionid;
-  res.write(fs.readFileSync('public/index.html'));
-  res.end();
-  return;
-});
+app.post('guestBook',redirectToGuestBook);
 
 app.get('/logout',(req,res)=>{
-  res.setHeader('Content-type',`${getContentType(req)}`);
-  res.write(fs.readFileSync('public/index.html'));
-  res.end();
+  res.redirect('index.html');
 });
 
 let PORT = 5000;
